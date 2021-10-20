@@ -33,10 +33,12 @@ namespace SystemGlobalServicesTestTask.Controllers
             return res == null ? NotFound() : Ok(res);
         }
 
-        [HttpGet("currencies/{id}")]
-        public IActionResult GetCurrencies(string id)
+        [HttpGet("currencies/id={id}&size={size}")]
+        public IActionResult GetCurrencies(string id, string size)
         {
-            var res = _proxy.GetNextCurrencies(id, 5);
+            int intSize;
+            if (!int.TryParse(size, out intSize) || intSize < 1) return BadRequest();
+            var res = _proxy.GetNextCurrencies(id, intSize);
             return res == null ? NotFound() : Ok(res);
         }
     }
